@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_paletted/general/root_wrapper.dart';
 import 'package:flutter_paletted/service/service.dart';
 
 import 'package:image/image.dart' as external_image;
@@ -57,33 +58,23 @@ class _ResultPageState extends State<ResultPage> {
       });
     }
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: SafeArea(
-        child: Column(
-          children: [
-            image,
-            Expanded(
-              flex: 2,
-              child: Row(
-                children: [
-                  for (final color in colors) ColorBlock(color: color)
-                ],
+    return RootWrapper(
+      child: Column(
+        children: [
+          image,
+          Row(
+            children: [for (final color in colors) ColorBlock(color: color)],
+          ),
+          Expanded(
+            child: TextButton(
+              style: TextButton.styleFrom(
+                minimumSize: const Size.fromHeight(64),
               ),
+              onPressed: onPressGenerate,
+              child: const Text('Generate'),
             ),
-            Expanded(
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(48),
-                ),
-                onPressed: onPressGenerate,
-                child: const Text('Generate'),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -101,10 +92,13 @@ class ColorBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        color: hexToColor(color),
-        child: Center(
-          child: Text(color),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ColoredBox(
+          color: hexToColor(color),
+          child: Center(
+            child: Text(color),
+          ),
         ),
       ),
     );

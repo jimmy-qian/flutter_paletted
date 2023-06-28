@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paletted/general/root_wrapper.dart';
 import 'package:flutter_paletted/result/result.dart';
+import 'package:flutter_paletted/service/service.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({
@@ -38,50 +40,73 @@ class _CameraPageState extends State<CameraPage> {
     super.dispose();
   }
 
+  Future<void> onPressTakePhoto() async {
+// Take the Picture in a try / catch block. If anything goes wrong,
+    // catch the error.
+    try {
+      // Ensure that the camera is initialized.
+      await _initializeControllerFuture;
+
+      // Attempt to take a picture and get the file `image`
+      // where it was saved.
+      final image = await _controller.takePicture();
+
+      if (!mounted) return;
+
+      // If the picture was taken, display it on a new screen.
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ResultPage(
+            // Pass the automatically generated path to
+            // the DisplayPictureScreen widget.
+            imagePath: image.path,
+          ),
+        ),
+      );
+    } catch (e) {
+      // If an error occurs, log the error to the console.
+      debugPrint(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Paletted')),
-      body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return CameraPreview(_controller);
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // Take the Picture in a try / catch block. If anything goes wrong,
-          // catch the error.
-          try {
-            // Ensure that the camera is initialized.
-            await _initializeControllerFuture;
-
-            // Attempt to take a picture and get the file `image`
-            // where it was saved.
-            final image = await _controller.takePicture();
-
-            if (!mounted) return;
-
-            // If the picture was taken, display it on a new screen.
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ResultPage(
-                  // Pass the automatically generated path to
-                  // the DisplayPictureScreen widget.
-                  imagePath: image.path,
-                ),
-              ),
-            );
-          } catch (e) {
-            // If an error occurs, log the error to the console.
-            debugPrint(e.toString());
-          }
-        },
-        child: const Icon(Icons.camera_alt),
+    return RootWrapper(
+      child: Column(
+        children: [
+          // Camera preview
+          FutureBuilder<void>(
+            future: _initializeControllerFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return CameraPreview(_controller);
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
+          // Controller
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(40),
+                    side: BorderSide(
+                      width: 4,
+                      color: hexToColor('#CCCCCC'),
+                    ),
+                    backgroundColor: Colors.white,
+                  ),
+                  onPressed: onPressTakePhoto,
+                  child: null,
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
