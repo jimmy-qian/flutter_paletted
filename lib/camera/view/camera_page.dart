@@ -90,7 +90,7 @@ class _CameraPageState extends State<CameraPage> {
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(40),
                     side: BorderSide(
-                      width: 4,
+                      width: 6,
                       color: hexToColor('#CCCCCC'),
                     ),
                     backgroundColor: Colors.white,
