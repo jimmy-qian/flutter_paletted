@@ -41,20 +41,16 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> onPressTakePhoto() async {
-// Take the Picture in a try / catch block. If anything goes wrong,
-    // catch the error.
     try {
       // Ensure that the camera is initialized.
       await _initializeControllerFuture;
-
-      // Attempt to take a picture and get the file `image`
-      // where it was saved.
       final image = await _controller.takePicture();
 
       if (!mounted) return;
 
       // If the picture was taken, display it on a new screen.
       await Navigator.of(context).push(
+        // ignore: inference_failure_on_instance_creation
         MaterialPageRoute(
           builder: (context) => ResultPage(
             // Pass the automatically generated path to
@@ -64,7 +60,6 @@ class _CameraPageState extends State<CameraPage> {
         ),
       );
     } catch (e) {
-      // If an error occurs, log the error to the console.
       debugPrint(e.toString());
     }
   }
