@@ -52,29 +52,106 @@ class _ResultPageState extends State<ResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    void onPressGenerate() {
+    void onPressedGenerate() {
       setState(() {
         colors = List.generate(5, (_) => getRandomColor());
       });
+    }
+
+    void onPressedDiscard() {
+      Navigator.of(context).pop();
     }
 
     return RootWrapper(
       child: Column(
         children: [
           image,
-          Row(
-            children: [for (final color in colors) ColorBlock(color: color)],
+          Expanded(
+            child: Row(
+              children: [for (final color in colors) ColorBlock(color: color)],
+            ),
           ),
           Expanded(
-            child: TextButton(
-              style: TextButton.styleFrom(
-                minimumSize: const Size.fromHeight(64),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: SecondaryButton(
+                      onPressed: onPressedDiscard,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Flexible(
+                    flex: 4,
+                    child: PrimaryButton(
+                      onPressed: onPressedGenerate,
+                    ),
+                  ),
+                ],
               ),
-              onPressed: onPressGenerate,
-              child: const Text('Generate'),
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class PrimaryButton extends StatelessWidget {
+  const PrimaryButton({
+    super.key,
+    this.onPressed,
+  });
+
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.all(24),
+        backgroundColor: Colors.white,
+        minimumSize: const Size.fromHeight(48),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        'Generate',
+        style: const TextStyle().copyWith(
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+}
+
+class SecondaryButton extends StatelessWidget {
+  const SecondaryButton({
+    super.key,
+    this.onPressed,
+  });
+
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.all(24),
+        minimumSize: const Size.fromHeight(48),
+        side: const BorderSide(
+          color: Colors.white,
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        'Discard',
+        style: const TextStyle().copyWith(
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -92,13 +169,10 @@ class ColorBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: ColoredBox(
-          color: hexToColor(color),
-          child: Center(
-            child: Text(color),
-          ),
+      child: ColoredBox(
+        color: hexToColor(color),
+        child: Center(
+          child: Text(color.toUpperCase()),
         ),
       ),
     );
