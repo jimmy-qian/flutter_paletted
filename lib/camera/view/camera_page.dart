@@ -1,8 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_paletted/general/root_wrapper.dart';
+import 'package:flutter_paletted/camera/widgets/capture_button.dart';
 import 'package:flutter_paletted/result/result.dart';
-import 'package:flutter_paletted/service/service.dart';
+import 'package:flutter_paletted/widgets/layout/root_wrapper.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({
@@ -40,7 +40,7 @@ class _CameraPageState extends State<CameraPage> {
     super.dispose();
   }
 
-  Future<void> onPressTakePhoto() async {
+  Future<void> onPressedCapture() async {
     try {
       // Ensure that the camera is initialized.
       await _initializeControllerFuture;
@@ -84,21 +84,7 @@ class _CameraPageState extends State<CameraPage> {
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(40),
-                    side: BorderSide(
-                      width: 6,
-                      color: hexToColor('#CCCCCC'),
-                    ),
-                    backgroundColor: Colors.white,
-                  ),
-                  onPressed: onPressTakePhoto,
-                  child: null,
-                )
-              ],
+              children: [CaptureButton(onPressedCapture: onPressedCapture)],
             ),
           )
         ],

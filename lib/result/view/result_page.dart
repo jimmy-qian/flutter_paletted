@@ -2,8 +2,10 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paletted/general/root_wrapper.dart';
+import 'package:flutter_paletted/result/widgets/color_block.dart';
 import 'package:flutter_paletted/service/service.dart';
+import 'package:flutter_paletted/widgets/common/common.dart';
+import 'package:flutter_paletted/widgets/layout/root_wrapper.dart';
 
 import 'package:image/image.dart' as external_image;
 
@@ -78,7 +80,9 @@ class _ResultPageState extends State<ResultPage> {
                 children: [
                   Flexible(
                     flex: 2,
-                    child: SecondaryButton(
+                    child: Button(
+                      label: 'Discard',
+                      variant: ButtonVariant.secondary,
                       onPressed: onPressedDiscard,
                     ),
                   ),
@@ -87,7 +91,8 @@ class _ResultPageState extends State<ResultPage> {
                   ),
                   Flexible(
                     flex: 4,
-                    child: PrimaryButton(
+                    child: Button(
+                      label: 'Generate',
                       onPressed: onPressedGenerate,
                     ),
                   ),
@@ -96,84 +101,6 @@ class _ResultPageState extends State<ResultPage> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({
-    super.key,
-    this.onPressed,
-  });
-
-  final void Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.all(24),
-        backgroundColor: Colors.white,
-        minimumSize: const Size.fromHeight(48),
-      ),
-      onPressed: onPressed,
-      child: Text(
-        'Generate',
-        style: const TextStyle().copyWith(
-          color: Colors.black,
-        ),
-      ),
-    );
-  }
-}
-
-class SecondaryButton extends StatelessWidget {
-  const SecondaryButton({
-    super.key,
-    this.onPressed,
-  });
-
-  final void Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.all(24),
-        minimumSize: const Size.fromHeight(48),
-        side: const BorderSide(
-          color: Colors.white,
-        ),
-      ),
-      onPressed: onPressed,
-      child: Text(
-        'Discard',
-        style: const TextStyle().copyWith(
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-}
-
-class ColorBlock extends StatelessWidget {
-  const ColorBlock({required this.color, super.key});
-
-  final String color;
-
-  Color hexToColor(String hexString, {String alphaChannel = 'FF'}) {
-    return Color(int.parse(hexString.replaceFirst('#', '0x$alphaChannel')));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ColoredBox(
-        color: hexToColor(color),
-        child: Center(
-          child: Text(color.toUpperCase()),
-        ),
       ),
     );
   }
