@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_paletted/result/widgets/color_block.dart';
 import 'package:flutter_paletted/service/service.dart';
 import 'package:flutter_paletted/widgets/common/common.dart';
-import 'package:flutter_paletted/widgets/layout/root_wrapper.dart';
+import 'package:flutter_paletted/widgets/layout/layout.dart';
 
 import 'package:image/image.dart' as external_image;
 
@@ -75,15 +75,17 @@ class _ResultPageState extends State<ResultPage> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(24),
               child: Row(
                 children: [
                   Flexible(
                     flex: 2,
-                    child: Button(
-                      label: 'Discard',
-                      variant: ButtonVariant.secondary,
-                      onPressed: onPressedDiscard,
+                    child: SizedBox.expand(
+                      child: Button(
+                        label: 'Discard',
+                        variant: ButtonVariant.secondary,
+                        onPressed: onPressedDiscard,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -91,9 +93,11 @@ class _ResultPageState extends State<ResultPage> {
                   ),
                   Flexible(
                     flex: 4,
-                    child: Button(
-                      label: 'Generate',
-                      onPressed: onPressedGenerate,
+                    child: SizedBox.expand(
+                      child: Button(
+                        label: 'Generate',
+                        onPressed: onPressedGenerate,
+                      ),
                     ),
                   ),
                 ],
